@@ -35,6 +35,7 @@ public class Main {
          */
 
         MyDoubleLinkedList list = new MyDoubleLinkedList();
+        System.out.println(list.getFirst());
         list.addToHead(3);
         list.addToHead(2);
         list.addToHead(1);
@@ -86,9 +87,26 @@ public class Main {
         list3.print();
 
         MyArrayLinkedList list4 = new MyArrayLinkedList();
-        list4.add(2);
-        list4.add(3);
-        list4.add(4);
+        list4.addToHead(2);
+        list4.addToHead(3);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.addToTail(4);
+        list4.print();
+        System.out.println(list4.getAndDeleteLast());
+        list4.print();
+        System.out.println(list4.checkToValue(4));
+        list4.deleteValue(4);
         list4.print();
 
 

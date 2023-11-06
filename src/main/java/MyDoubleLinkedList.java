@@ -16,7 +16,10 @@ public class MyDoubleLinkedList implements MyList{
 
     @Override
     public Object getFirst() {
-        return first.value;
+        if (!isEmpty()) {
+            return first.value;
+        }
+        return null;
     }
 
     @Override

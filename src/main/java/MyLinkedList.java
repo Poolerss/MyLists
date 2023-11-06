@@ -25,7 +25,10 @@ public class MyLinkedList implements MyList {
 
     @Override
     public Object getFirst() {
-        return head.value;
+        if (!isEmpty()) {
+            return head.value;
+        }
+        return null;
     }
 
     @Override
