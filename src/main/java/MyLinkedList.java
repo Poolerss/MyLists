@@ -1,19 +1,21 @@
+import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-
-public class MyLinkedList implements MyList {
+public class MyLinkedList<T> implements MyList <T>, Iterable<T>{
     private Node head;
 
-    private static class Node {
-        Object value;
-        Node next;
+    private class Node <T> {
+        T value;
+        Node<T> next;
 
-        public Node(Object value) {
+        public Node(T value) {
             this.value = value;
         }
     }
 
     @Override
-    public void addToHead(Object object) {
+    public void addToHead(T object) {
         Node newNode = new Node(object);
         if (!isEmpty()) {
             newNode.next = head;
@@ -24,48 +26,50 @@ public class MyLinkedList implements MyList {
     }
 
     @Override
-    public Object getFirst() {
+    public T getFirst() {
         if (!isEmpty()) {
-            return head.value;
+            return (T) head.value;
         }
         return null;
     }
 
     @Override
-    public Object getAndDeleteFirst() {
+    public T getAndDeleteFirst() {
         if (!isEmpty()) {
             Node current = head;
             head = current.next;
-            return current.value;
+            return (T) current.value;
         }
         return null;
     }
 
     @Override
-    public void addToTail(Object object) {
+    public void addToTail(T object) {
         if (!isEmpty()){
-            Node current = head;
+            Node<T> current = head;
             while (current.next!=null){
                 current = current.next;
             }
-            current.next=new Node(object);
+            current.next=new Node<>(object);
+        } else {
+            head = new Node<>(object);
         }
     }
 
     @Override
-    public Object getLast() {
+    public T getLast() {
         if (!isEmpty()){
             Node current = head;
             while (current.next!=null   ){
                 current=current.next;
             }
-            return current.value;
+            return (T) current.value;
         }
         return null;
     }
 
     @Override
-    public Object getAndDeleteLast() {
+    public T getAndDeleteLast() {
         if(!isEmpty()){
             Node current = head;
             while (current.next.next!=null){
@@ -73,13 +77,13 @@ public class MyLinkedList implements MyList {
             }
             Node last = current.next;
             current.next=null;
-            return last.value;
+            return (T) last.value;
         }
         return null;
     }
 
     @Override
-    public boolean checkToValue(Object object) {
+    public boolean checkToValue(T object) {
         if (!isEmpty()){
             Node current = head;
             while (current.next!=null){
@@ -105,7 +109,7 @@ public class MyLinkedList implements MyList {
     }
 
 
-    public void deleteValue(Object object) {
+    public void deleteValue(T object) {
         while (head != null && head.value.equals(object)) {
             head = head.next;
         }
@@ -141,18 +145,75 @@ public class MyLinkedList implements MyList {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        MyLinkedList that = (MyLinkedList) o;
 
-        return head != null ? head.equals(that.head) : that.head == null;
-    }
 
     @Override
-    public int hashCode() {
-        return head != null ? head.hashCode() : 0;
+    public Iterator<T> iterator() {
+        return new MyLinkedListIterator();
     }
+
+
+
+
+    public void forEach(Consumer<? super T> action) {
+        Node<T> current = head;
+        while (current != null) {
+            action.accept(current.value);
+            current = current.next;
+        }
+    }
+
+
+    public void forEach(Predicate<? super T> predicate, Consumer<? super T> action) {
+        Node<T> current = head;
+        while (current != null) {
+            if (!predicate.test(current.value)) {
+                action.accept(current.value);
+            }else {
+                break;
+            }
+            current = current.next;
+        }
+    }
+
+
+    public void forEach(T startValue, T endValue, Consumer<? super T> action) {
+        boolean withinRange = false;
+
+        for (T value : this) {
+            if (withinRange) {
+                action.accept(value);
+            }
+            if (value.equals(startValue)) {
+                withinRange = true;
+            }
+            if (value.equals(endValue)) {
+                break;
+            }
+        }
+    }
+
+
+
+
+    private class MyLinkedListIterator implements Iterator<T> {
+        private Node<T> current = head;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            T value = current.value;
+            current = current.next;
+            return value;
+        }
+
+
+    }
+
+
 }

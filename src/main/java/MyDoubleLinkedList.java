@@ -1,4 +1,7 @@
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 public class MyDoubleLinkedList implements MyList{
     Node first;
@@ -214,8 +217,23 @@ public class MyDoubleLinkedList implements MyList{
         }
     }
 
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
 
-private class Node{
+    @Override
+    public void forEach(Consumer action) {
+        MyList.super.forEach(action);
+    }
+
+    @Override
+    public Spliterator spliterator() {
+        return MyList.super.spliterator();
+    }
+
+
+    private class Node{
     Node previous;
     private Object value;
     Node next;

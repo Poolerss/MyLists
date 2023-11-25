@@ -1,3 +1,7 @@
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+
 public class MyArrayLinkedList implements MyList{
     private static final int SIZE_PER_NODE = 10;
     private Node head;
@@ -181,6 +185,21 @@ public class MyArrayLinkedList implements MyList{
             }
         }
         return SIZE_PER_NODE;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+    @Override
+    public void forEach(Consumer action) {
+        MyList.super.forEach(action);
+    }
+
+    @Override
+    public Spliterator spliterator() {
+        return MyList.super.spliterator();
     }
 
     private class Node {
