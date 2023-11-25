@@ -1,6 +1,5 @@
 import java.util.Iterator;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class MyLinkedList<T> implements MyList <T>, Iterable<T>{
     private Node head;
@@ -182,6 +181,7 @@ public class MyLinkedList<T> implements MyList <T>, Iterable<T>{
             currentNode = currentNode.next;
         }
     }
+
 
 
 

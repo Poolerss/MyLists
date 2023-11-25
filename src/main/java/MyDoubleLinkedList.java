@@ -1,10 +1,9 @@
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class MyDoubleLinkedList implements MyList{
-    Node first;
+public class MyDoubleLinkedList<T> implements MyList<T>{
+    Node<T> first;
     Node last;
 
     @Override
@@ -18,7 +17,7 @@ public class MyDoubleLinkedList implements MyList{
     }
 
     @Override
-    public Object getFirst() {
+    public T getFirst() {
         if (!isEmpty()) {
             return first.value;
         }
@@ -26,11 +25,11 @@ public class MyDoubleLinkedList implements MyList{
     }
 
     @Override
-    public Object getAndDeleteFirst() {
+    public T getAndDeleteFirst() {
         if (!isEmpty()){
             Node current = first;
              first=first.next;
-             return current.value;
+             return (T) current.value;
         }
         return null;
     }
@@ -46,17 +45,17 @@ public class MyDoubleLinkedList implements MyList{
     }
 
     @Override
-    public Object getLast() {
-        return last.value;
+    public T getLast() {
+        return (T) last.value;
     }
 
     @Override
-    public Object getAndDeleteLast() {
+    public T getAndDeleteLast() {
         if (!isEmpty()){
             Node current = last;
             last = last.previous;
             last.next=null;
-            return current.value;
+            return (T) current.value;
         }
         return null;
     }
@@ -219,33 +218,76 @@ public class MyDoubleLinkedList implements MyList{
 
     @Override
     public Iterator iterator() {
-        return null;
+        return new MyDoubleLinkedListIterator();
     }
 
     @Override
-    public void forEach(Consumer action) {
+    public void forEach(Consumer<? super T> action) {
         MyList.super.forEach(action);
     }
+    public void forEach(T startValue, T endValue, Consumer<? super T> action) {
+        Node<T> currentNode = first;
+        boolean withinRange = false;
 
-    @Override
-    public Spliterator spliterator() {
-        return MyList.super.spliterator();
+        while (currentNode != null) {
+            if (currentNode.value.equals(startValue)) {
+                withinRange = true;
+            }
+            if (withinRange) {
+                action.accept(currentNode.value);
+            }
+            if (currentNode.value.equals(endValue)) {
+                break;
+            }
+            currentNode = currentNode.next;
+        }
+    }
+    public void forEachToTail(T endValue, T startValue, Consumer<? super T> action) {
+        Node<T> currentNode = last;
+        boolean withinRange = false;
+
+        while (currentNode != null) {
+            if (currentNode.value.equals(startValue)) {
+                withinRange = true;
+            }
+            if (withinRange) {
+                action.accept(currentNode.value);
+            }
+            if (currentNode.value.equals(endValue)) {
+                break;
+            }
+            currentNode = currentNode.previous;
+        }
     }
 
+    private class Node <T>{
+    Node <T> previous;
+    private T value;
+    Node<T> next;
 
-    private class Node{
-    Node previous;
-    private Object value;
-    Node next;
-
-        public Node(Node previous, Object value, Node next) {
+        public Node(Node previous, T value, Node next) {
             this.previous = previous;
             this.value = value;
             this.next = next;
         }
     }
 
+    private class MyDoubleLinkedListIterator implements Iterator<T> {
+        private Node<T> current = first;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            T value = current.value;
+            current = current.next;
+            return value;
+        }
 
 
+    }
 
 }
