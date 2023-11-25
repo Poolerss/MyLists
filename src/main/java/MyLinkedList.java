@@ -165,32 +165,21 @@ public class MyLinkedList<T> implements MyList <T>, Iterable<T>{
     }
 
 
-    public void forEach(Predicate<? super T> predicate, Consumer<? super T> action) {
-        Node<T> current = head;
-        while (current != null) {
-            if (!predicate.test(current.value)) {
-                action.accept(current.value);
-            }else {
-                break;
-            }
-            current = current.next;
-        }
-    }
-
-
     public void forEach(T startValue, T endValue, Consumer<? super T> action) {
+        Node<T> currentNode = head;
         boolean withinRange = false;
 
-        for (T value : this) {
-            if (withinRange) {
-                action.accept(value);
-            }
-            if (value.equals(startValue)) {
+        while (currentNode != null) {
+            if (currentNode.value.equals(startValue)) {
                 withinRange = true;
             }
-            if (value.equals(endValue)) {
+            if (withinRange) {
+                action.accept(currentNode.value);
+            }
+            if (currentNode.value.equals(endValue)) {
                 break;
             }
+            currentNode = currentNode.next;
         }
     }
 
